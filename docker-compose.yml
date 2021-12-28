@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  app:
+    build: .
+    container_name: docker-nest-app
+    entrypoint: ./.docker/entrypoint.sh
+    ports:
+      - 3000:3000
+    volumes:
+      - .:/home/node/app
+
+  db:
+    image: mysql:5.7
+    container_name: docker-nest-db
+    restart: always
+    tty: true
+    ports:
+      - '33006:3306'
+    volumes:
+      - docker-nest-dbdata:/var/lib/mysql
+    environment:
+      - MYSQL_DATABASE=docker_nestdb
+      - MYSQL_ROOT_PASSWORD=nestdb
+      - MYSQL_USER=root
+
+volumes:
+  docker-nest-dbdata:
+    external: true
